@@ -25,7 +25,7 @@ package:
 
 functions:
   app:
-    handler: lambda.app
+    handler: build/lambda.app
     events:
       - http: 'ANY {proxy+}'
 
