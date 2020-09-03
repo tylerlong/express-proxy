@@ -1,24 +1,10 @@
-console.log('Try npm run check/fix!');
+import express from 'express';
+import proxy from 'express-http-proxy';
 
-const longString =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ut aliquet diam.';
+const app = express();
+app.use('/microsoft', proxy('https://login.microsoftonline.com'));
 
-const trailing = 'Semicolon';
-
-const why = 'am I tabbed?';
-
-export function doSomeStuff(
-  withThis: string,
-  andThat: string,
-  andThose: string[]
-) {
-  //function on one line
-  if (!andThose.length) {
-    return false;
-  }
-  console.log(withThis);
-  console.log(andThat);
-  console.dir(andThose);
-  return;
-}
-// TODO: more examples
+const port = 3000;
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
+});
