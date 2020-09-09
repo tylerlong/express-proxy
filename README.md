@@ -13,6 +13,5 @@ Browser side apps call this proxy to workaround CORS. It is secure because there
 ## Deploy
 
 ```
-yarn tsc
-yarn sls deploy
+yarn tsc && yarn sls deploy
 ```
