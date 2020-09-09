@@ -40,31 +40,67 @@ const getGoogleAuth = (options: GoogleAuthOptions) => {
   });
 };
 app.post('/google/admin/users/list', async (req, res) => {
-  const r = await google
-    .admin({
-      version: 'directory_v1',
-      auth: getGoogleAuth(req.body.auth),
-    })
-    .users.list(req.body.body);
-  return res.json(r.data);
+  let exception = false;
+  let status = 200;
+  let data: {};
+  try {
+    const r = await google
+      .admin({
+        version: 'directory_v1',
+        auth: getGoogleAuth(req.body.auth),
+      })
+      .users.list(req.body.body);
+    exception = false;
+    status = r.status;
+    data = r.data;
+  } catch (e) {
+    exception = true;
+    status = e.response.status;
+    data = e.response.data;
+  }
+  return res.json({exception, status, data});
 });
 app.post('/google/calendar/events/list', async (req, res) => {
-  const r = await google
-    .calendar({
-      version: 'v3',
-      auth: getGoogleAuth(req.body.auth),
-    })
-    .events.list(req.body.body);
-  return res.json(r.data);
+  let exception = false;
+  let status = 200;
+  let data: {};
+  try {
+    const r = await google
+      .calendar({
+        version: 'v3',
+        auth: getGoogleAuth(req.body.auth),
+      })
+      .events.list(req.body.body);
+    exception = false;
+    status = r.status;
+    data = r.data;
+  } catch (e) {
+    exception = true;
+    status = e.response.status;
+    data = e.response.data;
+  }
+  return res.json({exception, status, data});
 });
 app.post('/google/calendar/events/patch', async (req, res) => {
-  const r = await google
-    .calendar({
-      version: 'v3',
-      auth: getGoogleAuth(req.body.auth),
-    })
-    .events.patch(req.body.body);
-  return res.json(r.data);
+  let exception = false;
+  let status = 200;
+  let data: {};
+  try {
+    const r = await google
+      .calendar({
+        version: 'v3',
+        auth: getGoogleAuth(req.body.auth),
+      })
+      .events.patch(req.body.body);
+    exception = false;
+    status = r.status;
+    data = r.data;
+  } catch (e) {
+    exception = true;
+    status = e.response.status;
+    data = e.response.data;
+  }
+  return res.json({exception, status, data});
 });
 
 export default app;
