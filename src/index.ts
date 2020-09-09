@@ -43,20 +43,27 @@ app.post('/google/admin/users/list', async (req, res) => {
   const r = await google
     .admin({
       version: 'directory_v1',
-      auth: getGoogleAuth(req.body),
+      auth: getGoogleAuth(req.body.auth),
     })
-    .users.list({
-      customer: 'my_customer',
-    });
+    .users.list(req.body.body);
   return res.json(r.data);
 });
 app.post('/google/calendar/events/list', async (req, res) => {
   const r = await google
     .calendar({
       version: 'v3',
-      auth: getGoogleAuth(req.body),
+      auth: getGoogleAuth(req.body.auth),
     })
-    .events.list({calendarId: 'primary'});
+    .events.list(req.body.body);
+  return res.json(r.data);
+});
+app.post('/google/calendar/events/patch', async (req, res) => {
+  const r = await google
+    .calendar({
+      version: 'v3',
+      auth: getGoogleAuth(req.body.auth),
+    })
+    .events.patch(req.body.body);
   return res.json(r.data);
 });
 
