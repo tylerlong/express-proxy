@@ -39,7 +39,7 @@ const getGoogleAuth = (options: GoogleAuthOptions) => {
     clientOptions: {subject: options.subjectEmail},
   });
 };
-app.post('/google/list-users', async (req, res) => {
+app.post('/google/admin/users/list', async (req, res) => {
   const r = await google
     .admin({
       version: 'directory_v1',
@@ -48,6 +48,15 @@ app.post('/google/list-users', async (req, res) => {
     .users.list({
       customer: 'my_customer',
     });
+  return res.json(r.data);
+});
+app.post('/google/calendar/events/list', async (req, res) => {
+  const r = await google
+    .calendar({
+      version: 'v3',
+      auth: getGoogleAuth(req.body),
+    })
+    .events.list({calendarId: 'primary'});
   return res.json(r.data);
 });
 

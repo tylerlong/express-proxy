@@ -8,3 +8,11 @@ Proxy HTTP Server to workaround CORS.
 You should specify confidential credentials (such as client ID, app ID, password...etc) in this project since this project is deployed onto server side.
 
 Browser side apps call this proxy to workaround CORS. It is secure because there is no confidential credentials saved on client side code.
+
+
+## Deploy
+
+```
+yarn tsc
+yarn sls deploy
+```
