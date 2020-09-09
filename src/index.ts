@@ -39,68 +39,54 @@ const getGoogleAuth = (options: GoogleAuthOptions) => {
     clientOptions: {subject: options.subjectEmail},
   });
 };
-app.post('/google/admin/users/list', async (req, res) => {
+const callGoogleApi = async (apiCall: Function) => {
   let exception = false;
   let status = 200;
   let data: {};
   try {
-    const r = await google
+    const r = await apiCall();
+    exception = false;
+    status = r.status;
+    data = r.data;
+  } catch (e) {
+    exception = true;
+    status = e.response.status;
+    data = e.response.data;
+  }
+  return {exception, status, data};
+};
+app.post('/google/admin/users/list', async (req, res) => {
+  const json = await callGoogleApi(async () => {
+    return await google
       .admin({
         version: 'directory_v1',
         auth: getGoogleAuth(req.body.auth),
       })
       .users.list(req.body.body);
-    exception = false;
-    status = r.status;
-    data = r.data;
-  } catch (e) {
-    exception = true;
-    status = e.response.status;
-    data = e.response.data;
-  }
-  return res.json({exception, status, data});
+  });
+  return res.json(json);
 });
 app.post('/google/calendar/events/list', async (req, res) => {
-  let exception = false;
-  let status = 200;
-  let data: {};
-  try {
-    const r = await google
+  const json = await callGoogleApi(async () => {
+    return await google
       .calendar({
         version: 'v3',
         auth: getGoogleAuth(req.body.auth),
       })
       .events.list(req.body.body);
-    exception = false;
-    status = r.status;
-    data = r.data;
-  } catch (e) {
-    exception = true;
-    status = e.response.status;
-    data = e.response.data;
-  }
-  return res.json({exception, status, data});
+  });
+  return res.json(json);
 });
 app.post('/google/calendar/events/patch', async (req, res) => {
-  let exception = false;
-  let status = 200;
-  let data: {};
-  try {
-    const r = await google
+  const json = await callGoogleApi(async () => {
+    return await google
       .calendar({
         version: 'v3',
         auth: getGoogleAuth(req.body.auth),
       })
       .events.patch(req.body.body);
-    exception = false;
-    status = r.status;
-    data = r.data;
-  } catch (e) {
-    exception = true;
-    status = e.response.status;
-    data = e.response.data;
-  }
-  return res.json({exception, status, data});
+  });
+  return res.json(json);
 });
 
 export default app;
